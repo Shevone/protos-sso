@@ -1,0 +1,39 @@
+// тут описан некий контракт того как должно выглядит наше gRPC приложение
+syntax = "proto3";
+
+package auth;
+
+option  go_package = "nickolay.sso.v1;ssov1";
+
+service Auth{
+   rpc Register(RegisterRequest) returns (RegisterResponse); // Метод регистрации
+   rpc Login(LoginRequest) returns (LoginResponse);
+   rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+}
+// ============================================================================
+// Регистрация
+// Запрос
+message RegisterRequest{
+  string email = 1; // Email регистрируемого пользователя
+  string password = 2; // пароль регистрируемого пользователя
+}
+// Ответ
+message RegisterResponse{
+  int64 user_id = 1; // ID зарегистрированного  пользователя
+}
+// ============================================================================
+message LoginRequest{
+  string email = 1;// Email входящего пользователя
+  string password = 2;// Пароль входящего пользователя
+  int32 app_id =3; // Id приложения, куда входит
+}
+message LoginResponse{
+  string token = 1; // Токен аутентификации
+}
+// =============================================================================
+message IsAdminRequest{
+  int64 user_id = 1; // id пользователя для провекри
+}
+message IsAdminResponse{
+  bool is_admin = 1; // Является ли пользователь админом
+}
